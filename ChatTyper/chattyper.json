@@ -1,0 +1,9 @@
+{
+  "Author": "Franz",
+  "Name": "ChatTyper",
+  "Description": "Prefixes all chatbox messages with their chat types.",
+  "InternalName": "chattyper",
+  "AssemblyVersion": "0.0.0.2",
+  "ApplicableVersion": "any",
+  "DalamudApiLevel": 3
+}
