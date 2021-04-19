@@ -27,12 +27,12 @@ namespace ChatTyper
 
         private void Chat_OnChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
         {
-
             foreach (var payload in message.Payloads)
             {
                 if (payload is TextPayload textPayload)
                 {
                     textPayload.Text = $"({(int)type}/{type}) {textPayload.Text}";
+                    break;
                 }
             }
             

@@ -4,7 +4,7 @@
         <AssemblyName>ChatTyper</AssemblyName>
         <AssemblyTitle>ChatTyper</AssemblyTitle>
         <ProductName>ChatTyper</ProductName>
-        <Version>0.0.0.2</Version>
+        <Version>0.0.0.3</Version>
         <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
