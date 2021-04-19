@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <RootNamespace>ChatTyper</RootNamespace>
-        <AssemblyName>chattyper</AssemblyName>
-        <AssemblyTitle>chattyper</AssemblyTitle>
+        <AssemblyName>ChatTyper</AssemblyName>
+        <AssemblyTitle>ChatTyper</AssemblyTitle>
         <ProductName>ChatTyper</ProductName>
-        <Version>0.0.0.1</Version>
+        <Version>0.0.0.2</Version>
         <TargetFramework>net48</TargetFramework>
     </PropertyGroup>
     <ItemGroup>
