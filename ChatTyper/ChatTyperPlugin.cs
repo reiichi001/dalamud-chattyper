@@ -48,7 +48,7 @@ namespace ChatTyper
             chat.Print($"This is sample text to the default Dalamud chat message type.");
         }
 
-        public string Name => "owo plugin";
+        public string Name => "chattyper plugin";
 
         public void Dispose()
         {

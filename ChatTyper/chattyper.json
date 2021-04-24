@@ -3,7 +3,7 @@
   "Name": "ChatTyper",
   "Description": "Prefixes all chatbox messages with their chat types.",
   "InternalName": "ChatTyper",
-  "AssemblyVersion": "0.0.0.3",
+  "AssemblyVersion": "0.0.0.4",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 3
 }
