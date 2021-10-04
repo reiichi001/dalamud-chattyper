@@ -1,11 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <RootNamespace>ChatTyper</RootNamespace>
-        <AssemblyName>ChatTyper</AssemblyName>
-        <AssemblyTitle>ChatTyper</AssemblyTitle>
-        <ProductName>ChatTyper</ProductName>
-        <Version>0.0.0.4</Version>
-        <TargetFramework>net48</TargetFramework>
+      <AssemblyVersion>0.0.1.0</AssemblyVersion>
+      <TargetFramework>net5.0-windows</TargetFramework>
+      <PlatformTarget>x64</PlatformTarget>
+      <Platforms>x64;AnyCPU</Platforms>
+      <LangVersion>9.0</LangVersion>
+      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+      <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+      <NoWarn>IDE0003</NoWarn>
+      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+
+    
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Dalamud">
@@ -18,6 +24,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="1.2.1" />
+        <PackageReference Include="DalamudPackager" Version="2.1.2" />
     </ItemGroup>
 </Project>

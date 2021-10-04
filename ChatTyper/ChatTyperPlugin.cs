@@ -1,31 +1,45 @@
 ﻿using System;
+using Dalamud.Data;
+using Dalamud.Game.ClientState;
+using Dalamud.Game.Command;
+using Dalamud.Game.Gui;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using ChatTyper.Attributes;
+using Dalamud.Game.Text;
 
 namespace ChatTyper
 {
     public class ChatTyperPlugin : IDalamudPlugin
     {
-        private DalamudPluginInterface _pi;
         private PluginCommandManager<ChatTyperPlugin> commandManager;
-        private Configuration config;
-        private readonly Random _rng = new Random();
+        public Configuration Config;
 
-        public void Initialize(DalamudPluginInterface pluginInterface)
+        [PluginService]
+        public DalamudPluginInterface Interface { get; private set; }
+
+        [PluginService]
+        public ClientState State { get; private set; }
+
+        [PluginService]
+        public ChatGui Chat { get; set; }
+
+        [PluginService]
+        public DataManager Data { get; set; }
+
+        public ChatTyperPlugin(CommandManager command)
         {
-            _pi = pluginInterface;
+            this.Config = (Configuration)this.Interface.GetPluginConfig() ?? new Configuration();
+            this.Config.Initialize(this.Interface);
 
-            this.config = (Configuration)_pi.GetPluginConfig() ?? new Configuration();
-            this.config.Initialize(_pi);
+            this.Chat.ChatMessage += ChatOnOnChatMessage;
 
-            pluginInterface.Framework.Gui.Chat.OnChatMessage += Chat_OnChatMessage;
-
-            this.commandManager = new PluginCommandManager<ChatTyperPlugin>(this, _pi);
+            this.commandManager = new PluginCommandManager<ChatTyperPlugin>(this, command);
         }
 
-        private void Chat_OnChatMessage(Dalamud.Game.Text.XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
+        private void ChatOnOnChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
         {
             foreach (var payload in message.Payloads)
             {
@@ -44,16 +58,26 @@ namespace ChatTyper
         {
             // You may want to assign these references to private variables for convenience.
             // Keep in mind that the local player does not exist until after logging in.
-            var chat = this._pi.Framework.Gui.Chat;
-            chat.Print($"This is sample text to the default Dalamud chat message type.");
+            this.Chat.Print($"This is sample text to the default Dalamud chat message type.");
         }
 
         public string Name => "chattyper plugin";
 
+        #region IDisposable Support
+        protected virtual void Dispose(bool disposing)
+        {
+            this.commandManager.Dispose();
+
+            this.Interface.SavePluginConfig(this.Config);
+            this.Chat.ChatMessage -= ChatOnOnChatMessage;
+            this.Interface.Dispose();
+        }
+
         public void Dispose()
         {
-            _pi.Framework.Gui.Chat.OnChatMessage -= Chat_OnChatMessage;
-            _pi.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+#endregion
     }
 }
