@@ -3,5 +3,5 @@
   "Name": "ChatTyper",
   "InternalName": "ChatTyper",
   "Description": "Prefixes all chatbox messages with their chat type number and name, if known.",
-  "Punchline": "This is still mostly a dev tool for debugging, but people like it?",
+  "Punchline": "This is still mostly a dev tool for debugging, but people like it?"
 }

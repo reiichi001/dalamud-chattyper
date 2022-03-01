@@ -59,10 +59,17 @@ namespace ChatTyper
                     }
                 },
                 {
+                    XivChatType.TellOutgoing, new XivChatTypeInfo // Tells need special handling, outgoing Tells are TellOutgoing
+                    {
+                        Slug = "tell",
+                        FancyName = "Tell Outgoing"
+                    }
+                },
+                {
                     XivChatType.TellIncoming, new XivChatTypeInfo // Tells need special handling, outgoing Tells are TellOutgoing
                     {
                         Slug = "tell",
-                        FancyName = "Tell"
+                        FancyName = "Tell Incoming"
                     }
                 },
                 {
@@ -279,6 +286,13 @@ namespace ChatTyper
 
                 // Custom types not defined in Dalamud
                 {
+                    (XivChatType)55, new XivChatTypeInfo
+                    {
+                        Slug = "alarm",
+                        FancyName = "Alarm"
+                    }
+                },
+                {
                     (XivChatType)61, new XivChatTypeInfo
                     {
                         Slug = "npctalk",
@@ -293,10 +307,38 @@ namespace ChatTyper
                     }
                 },
                 {
+                    (XivChatType)69, new XivChatTypeInfo
+                    {
+                        Slug = "fcannounce",
+                        FancyName = "Free Company Announcement"
+                    }
+                },
+                {
+                    (XivChatType)70, new XivChatTypeInfo
+                    {
+                        Slug = "fclogin",
+                        FancyName = "Free Company Login/Logout"
+                    }
+                },
+                {
                     XivChatType.RetainerSale, new XivChatTypeInfo
                     {
                         Slug = "retainersale",
                         FancyName = "Retainer Sale"
+                    }
+                },
+                {
+                    (XivChatType)73, new XivChatTypeInfo
+                    {
+                        Slug = "sign",
+                        FancyName = "sign"
+                    }
+                },
+                {
+                    (XivChatType)74, new XivChatTypeInfo
+                    {
+                        Slug = "random",
+                        FancyName = "Random Number"
                     }
                 },
                 // Special handling for GM types

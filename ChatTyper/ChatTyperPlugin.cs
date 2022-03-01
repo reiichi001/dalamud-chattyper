@@ -92,6 +92,11 @@ namespace ChatTyper
         public void ChatTyperCommand(string command, string args)
         {
             string[] arguments = args.Split(" ");
+            if (arguments.Length == 0)
+            {
+                // this.Chat.Print($"You probably mean /chattyper help");
+                arguments[0] = "help";
+            }
             if (arguments.Length == 1)
             {
                 if (arguments[0] == "help")
@@ -141,7 +146,6 @@ namespace ChatTyper
 
             this.Interface.SavePluginConfig(this.Config);
             this.Chat.ChatMessage -= ChatOnOnChatMessage;
-            this.Interface.Dispose();
         }
 
         public void Dispose()
