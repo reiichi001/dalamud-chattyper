@@ -101,8 +101,8 @@ namespace ChatTyper
             {
                 if (arguments[0] == "help")
                 {
-                    this.Chat.Print($"Use '/chattyper classic' to set the classic style.");
-                    this.Chat.Print($"Use '/chattyper name' to set the name prefix style.");
+                    this.Chat.Print($"Use '/chattyper classic' to set the classic style with chat type before the sender and message.");
+                    this.Chat.Print($"Use '/chattyper name' to post chat type after the sender's name.");
                     this.Chat.Print($"Use '/chattyper quiet' to toggle quiet / reduced text mode.");
                     this.Chat.Print($"Set ChatTyper output to classic style.");
                 }
