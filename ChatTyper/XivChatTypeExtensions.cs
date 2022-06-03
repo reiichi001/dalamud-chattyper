@@ -454,7 +454,7 @@ namespace ChatTyper
             if (type == XivChatType.TellOutgoing)
                 type = XivChatType.TellIncoming;
 
-            if (TypeInfoDict.TryGetValue(type, out var info))
+            if (TypeInfoDict.TryGetValue((XivChatType)((int)type & 0x7F), out var info))
                 return info;
 
             throw new ArgumentException("No info mapping for chat type.", nameof(type));

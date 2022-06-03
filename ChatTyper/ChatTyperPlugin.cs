@@ -6,6 +6,7 @@ using Dalamud.Game.Gui;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.IoC;
+using Dalamud.Logging;
 using Dalamud.Plugin;
 using ChatTyper.Attributes;
 using Dalamud.Game.Text;
@@ -38,27 +39,47 @@ namespace ChatTyper
 
         private TextPayload FormatTextStyle(XivChatType type)
         {
+            var strippedType = (XivChatType)((int)type & 0x7F);
             string FullTypeName;
             try
             {
-                FullTypeName = XivChatTypeExtensions.GetFancyName(type);
+                FullTypeName = XivChatTypeExtensions.GetFancyName(strippedType);
             }
             catch (ArgumentException)
             {
-                FullTypeName = type.ToString();
+                FullTypeName = strippedType.ToString();
+                PluginLog.Verbose($"Couldn't find a type for {strippedType}/{type}, so we'll call it {(int)strippedType}");
             }
 
-            if ($"{(int)type}" == FullTypeName)
+            // short (Config.quietmode) - use slug instead of fancy name. If there's no name at all, then "chat type" or ""
+            // verbose (Config.verbose) - simple/senderized/name vs simple/name
+
+            string payload = $"this should always be changed.";
+
+            // if our type == name, then we don't have a slug/fancyname for this type
+            if ($"{(int)strippedType}" == FullTypeName)
             {
-                return new TextPayload($"[{(Config.quietmode ? "Chat type " : "")}{type}] ");
+                payload = $"[{(Config.shortmode ? "" : "Chat type ")}"
+                    + $"{(int)strippedType}"
+                    + $"{(Config.verbose ? $"/{(int)type}" : "")}] ";
+
+                // return new TextPayload($"[{(Config.quietmode ? "" : "Chat type ")}{(int)strippedType}/{type}] ");
+            }
+            else
+            {
+                payload = $"[{(int)strippedType}"
+                    + $"{(Config.verbose ? $"/{(int)type}" : "")}/"
+                    + $"{(Config.shortmode ? XivChatTypeExtensions.GetSlug(strippedType) : FullTypeName)}] ";
+                // return new TextPayload($"[{(int)strippedType}/{(int)type}/{(Config.quietmode ? XivChatTypeExtensions.GetSlug(type) : FullTypeName)}] ");
             }
 
-            return new TextPayload($"[{(int)type}/{(Config.quietmode ? XivChatTypeExtensions.GetSlug(type) : FullTypeName)}] ");
+
+            return new TextPayload(payload);
         }
 
         private void ChatOnOnChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
         {
-            if (Config.style == 2)
+            if (Config.prefix)
             {
                 if (sender.Payloads.Count > 0)
                 {
@@ -69,22 +90,10 @@ namespace ChatTyper
                     message.Payloads.Insert(0, FormatTextStyle(type));
                 }
             }
-            else if (Config.style == 1)
+            else
             {
                 message.Payloads.Insert(0, FormatTextStyle(type));
-            }    
-
-            /*
-            foreach (var payload in message.Payloads)
-            {
-                if (payload is TextPayload textPayload)
-                {
-                    textPayload.Text = $"({(int)type}/{type}) {textPayload.Text}";
-                    break;
-                }
             }
-            */
-            
         }
 
         [Command("/chattyper")]
@@ -101,29 +110,31 @@ namespace ChatTyper
             {
                 if (arguments[0] == "help")
                 {
-                    this.Chat.Print($"Use '/chattyper classic' to set the classic style with chat type before the sender and message.");
-                    this.Chat.Print($"Use '/chattyper name' to post chat type after the sender's name.");
-                    this.Chat.Print($"Use '/chattyper quiet' to toggle quiet / reduced text mode.");
-                    this.Chat.Print($"Set ChatTyper output to classic style.");
+                    this.Chat.Print($"Use '/chattyper short' to toggle short name or full name mode.");
+                    this.Chat.Print($"Use '/chattyper style' to toggle prefix/postfix on sender's name.");
+                    this.Chat.Print($"Use '/chattyper verbose' to toggle showing both chat type numbers or just the primary type.");
                 }
-                if (arguments[0] == "classic")
+                if (arguments[0] == "style")
                 {
-                    Config.style = 1;
-                    Config.Save();
-                    this.Chat.Print($"Set ChatTyper output to classic style.");
+                    Config.prefix = !Config.prefix;
+                    this.Chat.Print($"Set ChatTyper output to {(Config.prefix ? "prefix" : "postfix")} mode.");
                 }
-                else if (arguments[0] == "name")
+                else if (arguments[0] == "verbose")
                 {
-                    Config.style = 2;
-                    Config.Save();
-                    this.Chat.Print($"Set ChatTyper output to name prefix style.");
+                    Config.verbose = !Config.verbose;
+                    this.Chat.Print($"Set ChatTyper output to {(Config.verbose ? "verbose" : "primary chat type only")} mode.");
                 }
-                else if (arguments[0] == "quiet")
+                else if (arguments[0] == "short")
                 {
-                    Config.quietmode = !Config.quietmode;
-                    Config.Save();
-                    this.Chat.Print($"ChatTyper quiet mode is {(Config.quietmode ? "enabled" : "disabled" )}.");
+                    Config.shortmode = !Config.shortmode;
+                    this.Chat.Print($"Set ChatTyper output to {(Config.shortmode ? "short name" : "full name")} mode.");
                 }
+                else
+                {
+                    this.Chat.PrintError($"Unexpected command parameter.");
+                    return;
+                }
+                Config.Save();
                 return;
             }
             else if (arguments.Length > 1)
