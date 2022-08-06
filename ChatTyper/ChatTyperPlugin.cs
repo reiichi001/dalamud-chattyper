@@ -114,7 +114,7 @@ namespace ChatTyper
                     this.Chat.Print($"Use '/chattyper style' to toggle prefix/postfix on sender's name.");
                     this.Chat.Print($"Use '/chattyper verbose' to toggle showing both chat type numbers or just the primary type.");
                 }
-                if (arguments[0] == "style")
+                else if (arguments[0] == "style")
                 {
                     Config.prefix = !Config.prefix;
                     this.Chat.Print($"Set ChatTyper output to {(Config.prefix ? "prefix" : "postfix")} mode.");
