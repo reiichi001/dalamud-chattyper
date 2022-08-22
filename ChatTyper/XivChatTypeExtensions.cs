@@ -13,6 +13,8 @@ namespace ChatTyper
             public string FancyName { get; set; }
         }
 
+        public static XivChatType IpcChatType => (XivChatType)99; // using dummy code that isn't used by game
+
         public static readonly IReadOnlyDictionary<XivChatType, XivChatTypeInfo> TypeInfoDict =
             new Dictionary<XivChatType, XivChatTypeInfo>
             {
@@ -59,17 +61,17 @@ namespace ChatTyper
                     }
                 },
                 {
-                    XivChatType.TellOutgoing, new XivChatTypeInfo // Tells need special handling, outgoing Tells are TellOutgoing
+                    XivChatType.TellOutgoing, new XivChatTypeInfo // Tells need special handling
                     {
                         Slug = "tell",
-                        FancyName = "Tell Outgoing"
+                        FancyName = "Tell (Outgoing)"
                     }
                 },
                 {
                     XivChatType.TellIncoming, new XivChatTypeInfo // Tells need special handling, outgoing Tells are TellOutgoing
                     {
                         Slug = "tell",
-                        FancyName = "Tell Incoming"
+                        FancyName = "Tell (Incoming)"
                     }
                 },
                 {
@@ -286,12 +288,28 @@ namespace ChatTyper
 
                 // Custom types not defined in Dalamud
                 {
+                    IpcChatType, new XivChatTypeInfo
+                    {
+                        Slug = "ipc",
+                        FancyName = "IPC"
+                    }
+                },
+                {
                     (XivChatType)55, new XivChatTypeInfo
                     {
                         Slug = "alarm",
                         FancyName = "Alarm"
                     }
                 },
+                /* This is no longer needed. It's part of SystemMessage.
+                {
+                    (XivChatType)57, new XivChatTypeInfo
+                    {
+                        Slug = "partyadd",
+                        FancyName = "Added to Party"
+                    }
+                },
+                */
                 {
                     (XivChatType)61, new XivChatTypeInfo
                     {
@@ -313,6 +331,15 @@ namespace ChatTyper
                         FancyName = "Free Company Announcement"
                     }
                 },
+                /* no longer needed. This is part of fcannounce when unmasked
+                {
+                    (XivChatType)8773, new XivChatTypeInfo
+                    {
+                        Slug = "fcrank",
+                        FancyName = "Free Company Ranks"
+                    }
+                },
+                */
                 {
                     (XivChatType)70, new XivChatTypeInfo
                     {
@@ -331,7 +358,7 @@ namespace ChatTyper
                     (XivChatType)73, new XivChatTypeInfo
                     {
                         Slug = "sign",
-                        FancyName = "sign"
+                        FancyName = "Sign"
                     }
                 },
                 {
@@ -339,6 +366,13 @@ namespace ChatTyper
                     {
                         Slug = "random",
                         FancyName = "Random Number"
+                    }
+                },
+                {
+                    (XivChatType)75, new XivChatTypeInfo
+                    {
+                        Slug = "nnn",
+                        FancyName = "Novice Network Notifications"
                     }
                 },
                 // Special handling for GM types
@@ -451,13 +485,13 @@ namespace ChatTyper
 
         public static XivChatTypeInfo GetInfo(this XivChatType type)
         {
-            if (type == XivChatType.TellOutgoing)
-                type = XivChatType.TellIncoming;
+            // if (type == XivChatType.TellOutgoing)
+            //     type = XivChatType.TellIncoming;
 
             if (TypeInfoDict.TryGetValue((XivChatType)((int)type & 0x7F), out var info))
                 return info;
 
-            throw new ArgumentException("No info mapping for chat type.", nameof(type));
+            throw new ArgumentException($"No info mapping for chat type. {nameof(type)} ({(int)type}){type}");
         }
 
         public static string GetSlug(this XivChatType type)
