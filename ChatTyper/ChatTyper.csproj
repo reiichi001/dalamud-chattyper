@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-      <AssemblyVersion>0.1.1.1</AssemblyVersion>
-      <TargetFramework>net6.0-windows</TargetFramework>
+      <AssemblyVersion>0.1.2.0</AssemblyVersion>
+      <TargetFramework>net7.0-windows</TargetFramework>
       <PlatformTarget>x64</PlatformTarget>
       <Platforms>x64;AnyCPU</Platforms>
-      <LangVersion>9.0</LangVersion>
+      <LangVersion>latest</LangVersion>
       <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
       <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
       <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
@@ -26,6 +26,6 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.8" />
+        <PackageReference Include="DalamudPackager" Version="2.1.10" />
     </ItemGroup>
 </Project>
