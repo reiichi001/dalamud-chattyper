@@ -1,15 +1,11 @@
 ﻿using System;
-using Dalamud.Data;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
 using Dalamud.IoC;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using ChatTyper.Attributes;
 using Dalamud.Game.Text;
+using Dalamud.Plugin.Services;
 
 namespace ChatTyper
 {
@@ -20,14 +16,15 @@ namespace ChatTyper
 
         [PluginService] public DalamudPluginInterface Interface { get; private set; }
 
-        [PluginService] public ClientState State { get; private set; }
+        [PluginService] public IClientState State { get; private set; }
 
-        [PluginService] public ChatGui Chat { get; set; }
+        [PluginService] public IChatGui Chat { get; set; }
 
-        [PluginService]
-        public DataManager Data { get; set; }
+        [PluginService] public IDataManager Data { get; set; }
 
-        public ChatTyperPlugin(CommandManager command)
+        [PluginService] IPluginLog Logger { get; set; }
+
+        public ChatTyperPlugin(ICommandManager command)
         {
             this.Config = (Configuration)this.Interface.GetPluginConfig() ?? new Configuration();
             this.Config.Initialize(this.Interface);
@@ -48,7 +45,7 @@ namespace ChatTyper
             catch (ArgumentException)
             {
                 FullTypeName = strippedType.ToString();
-                PluginLog.Verbose($"Couldn't find a type for {strippedType}/{type}, so we'll call it {(int)strippedType}");
+                Logger.Verbose($"Couldn't find a type for {strippedType}/{type}, so we'll call it {(int)strippedType}");
             }
 
             // short (Config.quietmode) - use slug instead of fancy name. If there's no name at all, then "chat type" or ""

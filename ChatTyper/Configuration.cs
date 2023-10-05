@@ -1,7 +1,6 @@
 ﻿using Dalamud.Configuration;
 using Dalamud.Plugin;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace ChatTyper
 {
