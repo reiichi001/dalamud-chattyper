@@ -15,7 +15,7 @@ namespace ChatTyper
         private PluginCommandManager<ChatTyperPlugin> commandManager;
         public Configuration Config;
 
-        [PluginService] public DalamudPluginInterface Interface { get; private set; }
+        [PluginService] public IDalamudPluginInterface Interface { get; private set; }
 
         [PluginService] public IClientState State { get; private set; }
 
