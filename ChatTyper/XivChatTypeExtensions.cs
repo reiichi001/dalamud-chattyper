@@ -266,8 +266,8 @@ namespace ChatTyper
                 {
                     XivChatType.SystemError, new XivChatTypeInfo
                     {
-                        Slug = "syserror",
-                        FancyName = "SystemError"
+                        Slug = "battlesyserror",
+                        FancyName = "BattleSystemMessage"
                     }
                 },
                 {

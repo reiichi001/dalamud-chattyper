@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using static Dalamud.Game.Command.CommandInfo;
 using ChatTyper.Attributes;
 using Dalamud.Plugin.Services;
+using static Dalamud.Game.Command.IReadOnlyCommandInfo;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ChatTyper

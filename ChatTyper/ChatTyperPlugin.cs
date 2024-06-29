@@ -6,6 +6,7 @@ using Dalamud.Plugin;
 using ChatTyper.Attributes;
 using Dalamud.Game.Text;
 using Dalamud.Plugin.Services;
+using System.Linq;
 
 namespace ChatTyper
 {
@@ -30,7 +31,6 @@ namespace ChatTyper
             this.Config.Initialize(this.Interface);
 
             this.Chat.ChatMessage += ChatOnOnChatMessage;
-
             this.commandManager = new PluginCommandManager<ChatTyperPlugin>(this, command);
         }
 
@@ -74,7 +74,7 @@ namespace ChatTyper
             return new TextPayload(payload);
         }
 
-        private void ChatOnOnChatMessage(XivChatType type, uint senderId, ref SeString sender, ref SeString message, ref bool isHandled)
+        private void ChatOnOnChatMessage(XivChatType type, int timestamp, ref SeString sender, ref SeString message, ref bool isHandled)
         {
             if (Config.prefix)
             {
@@ -89,7 +89,64 @@ namespace ChatTyper
             }
             else
             {
-                message.Payloads.Insert(0, FormatTextStyle(type));
+                message.Payloads.Add(FormatTextStyle(type));
+            }
+
+            //Logger.Verbose("CTDEBUG: " + message.TextValue);
+        }
+
+        [Command("/cttest")]
+        [HelpMessage("/cttest <type number> <message> to print a chat message of that type.")]
+        [DoNotShowInHelp]
+        public void ChatTyperTestCommand(string command, string args)
+        {
+            
+            string[] arguments = args.Split(" ");
+            Logger.Info($"args: '{args}' : arguments={arguments.Length}");
+            if (arguments.Length == 0)
+            {
+                // this.Chat.Print($"You probably mean /chattyper help");
+                arguments[0] = "help";
+            }
+            if (arguments.Length == 1)
+            {
+                if (arguments[0] == "help" || arguments[0] == string.Empty)
+                {
+                    this.Chat.Print($"Use '/cttest <type number> <message>` to print a chat message of that type.");
+                }
+                else
+                {
+                    TextPayload payload = new TextPayload("This is a sample message");
+                    int typeint = int.Parse(arguments[0]);
+                    XivChatType type = typeint > 0 ? (XivChatType)typeint : XivChatType.Debug;
+                    var chatPayload = new XivChatEntry();
+
+                    chatPayload.Type = type;
+                    chatPayload.Message = new SeString(payload);
+                    chatPayload.Name = State.LocalPlayer?.Name ?? string.Empty;
+
+                    this.Chat.Print(chatPayload);
+                }
+            }
+            else if (arguments.Length > 1)
+            {
+                    
+                int typeint = int.Parse(arguments[0]);
+                XivChatType type = typeint > 0 ? (XivChatType)typeint : XivChatType.Debug;
+                string text = String.Join(" ", arguments.Skip(1));
+                TextPayload payload = new TextPayload(text);
+                var chatPayload = new XivChatEntry();
+
+                var playername = State.LocalPlayer.Name.TextValue ?? "Unknown Player";
+                uint playerworld = State.LocalPlayer.HomeWorld.Id;
+
+                PlayerPayload p = new PlayerPayload(playername, playerworld);
+
+                chatPayload.Type = type;
+                chatPayload.Message = new SeString(p, payload);
+                chatPayload.Name = State.LocalPlayer?.Name ?? "Unknown Name";
+
+                this.Chat.Print(chatPayload);
             }
         }
 
