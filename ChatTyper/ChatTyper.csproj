@@ -1,35 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Dalamud.NET.Sdk/11.0.0">
     <PropertyGroup>
-      <AssemblyVersion>0.1.4.0</AssemblyVersion>
-      <TargetFramework>net8.0-windows</TargetFramework>
-      <PlatformTarget>x64</PlatformTarget>
-      <Platforms>x64;AnyCPU</Platforms>
-      <LangVersion>latest</LangVersion>
-      <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-      <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-      <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+      <AssemblyVersion>0.1.5.0</AssemblyVersion>
       <NoWarn>IDE0003</NoWarn>
-      <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-      <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile> 
+      <Platforms>x64</Platforms>
     </PropertyGroup>
-	<PropertyGroup>
-		<DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-	</PropertyGroup>
-    <ItemGroup>
-        <Reference Include="Dalamud">
-            <HintPath>$(DalamudLibPath)Dalamud.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="Newtonsoft.Json">
-            <HintPath>$(DalamudLibPath)Newtonsoft.Json.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-		<Reference Include="Lumina.Excel">
-			<HintPath>$(DalamudLibPath)Lumina.Excel.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-    </ItemGroup>
-    <ItemGroup>
-        <PackageReference Include="DalamudPackager" Version="2.1.13" />
-    </ItemGroup>
 </Project>

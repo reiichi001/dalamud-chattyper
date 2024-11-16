@@ -138,7 +138,7 @@ namespace ChatTyper
                 var chatPayload = new XivChatEntry();
 
                 var playername = State.LocalPlayer.Name.TextValue ?? "Unknown Player";
-                uint playerworld = State.LocalPlayer.HomeWorld.Id;
+                uint playerworld = State.LocalPlayer.HomeWorld.RowId;
 
                 PlayerPayload p = new PlayerPayload(playername, playerworld);
 
